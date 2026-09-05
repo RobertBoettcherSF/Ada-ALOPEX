@@ -42,7 +42,7 @@ package body Alopex is
    -- Core ALOPEX engine shared by variants
    procedure Core_Optimize
      (Initial_Weights   : in Weight_Vector;
-      Objective         : not null Objective_Function;
+      Objective         : not null access function (W : Weight_Vector) return Cost_Type;
       Max_Iterations    : in Positive;
       Learning_Rate     : in Learning_Rate_Type;
       Initial_Temp      : in Temperature_Type;
@@ -58,7 +58,7 @@ package body Alopex is
       Gen          : Generator;
       Current_W    : Weight_Vector := Initial_Weights;
       Prev_W       : Weight_Vector := Initial_Weights;
-      Delta_W      : Weight_Vector := (others => 0.0);
+      Delta_W      : Weight_Vector := [others => 0.0];
 
       Current_R    : Cost_Type;
       Prev_R       : Cost_Type;
@@ -172,7 +172,7 @@ package body Alopex is
    -- 1. General Optimize
    procedure Optimize
      (Initial_Weights : in Weight_Vector;
-      Objective       : not null Objective_Function;
+      Objective       : not null access function (W : Weight_Vector) return Cost_Type;
       Max_Iterations  : in Positive;
       Learning_Rate   : in Learning_Rate_Type;
       Temperature     : in Temperature_Type;
@@ -199,7 +199,7 @@ package body Alopex is
    -- 2. Minimize
    procedure Minimize
      (Initial_Weights : in Weight_Vector;
-      Objective       : not null Objective_Function;
+      Objective       : not null access function (W : Weight_Vector) return Cost_Type;
       Max_Iterations  : in Positive;
       Learning_Rate   : in Learning_Rate_Type;
       Temperature     : in Temperature_Type;
@@ -229,7 +229,7 @@ package body Alopex is
    -- 3. Maximize
    procedure Maximize
      (Initial_Weights : in Weight_Vector;
-      Objective       : not null Objective_Function;
+      Objective       : not null access function (W : Weight_Vector) return Cost_Type;
       Max_Iterations  : in Positive;
       Learning_Rate   : in Learning_Rate_Type;
       Temperature     : in Temperature_Type;
@@ -259,7 +259,7 @@ package body Alopex is
    -- 4. Optimize_Adaptive
    procedure Optimize_Adaptive
      (Initial_Weights   : in Weight_Vector;
-      Objective         : not null Objective_Function;
+      Objective         : not null access function (W : Weight_Vector) return Cost_Type;
       Max_Iterations    : in Positive;
       Learning_Rate     : in Learning_Rate_Type;
       Initial_Temp      : in Temperature_Type;
