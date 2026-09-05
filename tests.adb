@@ -19,17 +19,17 @@ procedure Tests is
    -- Sample objective functions for testing
    function Quad_Min (W : Weight_Vector) return Cost_Type is
    begin
-      return W(1) * W(1);
+      return Cost_Type (W(1) * W(1));
    end Quad_Min;
 
    function Shifted_Quad (W : Weight_Vector) return Cost_Type is
    begin
-      return (W(1) - 3.0) * (W(1) - 3.0) + (W(2) - 4.0) * (W(2) - 4.0);
+      return Cost_Type ((W(1) - 3.0) * (W(1) - 3.0) + (W(2) - 4.0) * (W(2) - 4.0));
    end Shifted_Quad;
 
    function Neg_Quad_Max (W : Weight_Vector) return Cost_Type is
    begin
-      return 10.0 - W(1) * W(1);
+      return Cost_Type (10.0 - W(1) * W(1));
    end Neg_Quad_Max;
 
    function Fails_On_Zero (W : Weight_Vector) return Cost_Type is
@@ -37,15 +37,15 @@ procedure Tests is
       if W(1) = 0.0 then
          raise Constraint_Error;
       end if;
-      return 1.0 / (W(1) * W(1));
+      return Cost_Type (1.0 / (W(1) * W(1)));
    end Fails_On_Zero;
 
-   W_Init : Weight_Vector (1 .. 1) := (1 => 5.0);
+   W_Init : Weight_Vector (1 .. 1) := [1 => 5.0];
    W_Final : Weight_Vector (1 .. 1);
    Best_C : Cost_Type;
    Iters  : Natural;
 
-   W_2D_Init : Weight_Vector (1 .. 2) := (1 => 10.0, 2 => -10.0);
+   W_2D_Init : Weight_Vector (1 .. 2) := [1 => 10.0, 2 => -10.0];
    W_2D_Final : Weight_Vector (1 .. 2);
 
    Ex_Caught : Boolean;
@@ -86,7 +86,7 @@ begin
    -- TEST 3 — Quadratic Maximization via Maximize procedure
    Put_Line ("TEST 3 — Specialized Maximize Procedure");
    Maximize
-     (Initial_Weights => Weight_Vector'(1 => 2.0),
+     (Initial_Weights => Weight_Vector'[1 => 2.0],
       Objective       => Neg_Quad_Max'Access,
       Max_Iterations  => 50,
       Learning_Rate   => 0.02,
@@ -133,7 +133,7 @@ begin
    -- TEST 6 — Euclidean Norm Helper Function
    Put_Line ("TEST 6 — Euclidean Norm Helper");
    declare
-      V : Weight_Vector(1 .. 3) := (3.0, 4.0, 0.0);
+      V : Weight_Vector(1 .. 3) := [3.0, 4.0, 0.0];
       Norm : Weight_Type;
    begin
       Norm := Euclidean_Norm (V);
@@ -145,7 +145,7 @@ begin
    -- TEST 7 — Single Element Vector Edge Case
    Put_Line ("TEST 7 — Single Element Vector Edge Case");
    declare
-      Single_W : Weight_Vector(1 .. 1) := (1 => 1.5);
+      Single_W : Weight_Vector(1 .. 1) := [1 => 1.5];
       Res_W    : Weight_Vector(1 .. 1);
    begin
       Minimize
@@ -218,7 +218,7 @@ begin
    Ex_Caught := False;
    begin
       Minimize
-        (Initial_Weights => Weight_Vector'(1 => 0.0),
+        (Initial_Weights => Weight_Vector'[1 => 0.0],
          Objective       => Fails_On_Zero'Access,
          Max_Iterations  => 10,
          Learning_Rate   => 0.01,
