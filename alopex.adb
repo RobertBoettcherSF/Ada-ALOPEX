@@ -3,9 +3,13 @@
 --------------------------------------------------------------------------------
 
 with Ada.Numerics.Elementary_Functions; use Ada.Numerics.Elementary_Functions;
+with Ada.Numerics.Generic_Elementary_Functions;
 with Ada.Numerics.Float_Random;
 
 package body Alopex is
+
+   -- Generic math instantiation for high-precision domain type
+   package Math is new Ada.Numerics.Generic_Elementary_Functions (Weight_Type);
 
    -- Helper: Generate Gaussian random variable using Box-Muller transform
    function Random_Normal
@@ -36,7 +40,7 @@ package body Alopex is
       for X of V loop
          Sum := Sum + X * X;
       end loop;
-      return Sqrt (Sum);
+      return Math.Sqrt (Sum);
    end Euclidean_Norm;
 
    -- Core ALOPEX engine shared by variants
@@ -58,7 +62,7 @@ package body Alopex is
       Gen          : Generator;
       Current_W    : Weight_Vector := Initial_Weights;
       Prev_W       : Weight_Vector := Initial_Weights;
-      Delta_W      : Weight_Vector := [others => 0.0];
+      Delta_W      : Weight_Vector (Initial_Weights'Range) := [others => 0.0];
 
       Current_R    : Cost_Type;
       Prev_R       : Cost_Type;
@@ -123,7 +127,7 @@ package body Alopex is
                for I in Current_W'Range loop
                   declare
                      Step_Change : constant Weight_Type :=
-                       Effective_LR * Delta_W(I) * Weight_Type(Delta_R) + R_Vector(I);
+                       Weight_Type(Effective_LR) * Delta_W(I) * Weight_Type(Delta_R) + R_Vector(I);
                   begin
                      Prev_W(I) := Current_W(I);
                      Delta_W(I) := Step_Change;
