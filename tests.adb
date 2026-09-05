@@ -40,12 +40,12 @@ procedure Tests is
       return Cost_Type (1.0 / (W(1) * W(1)));
    end Fails_On_Zero;
 
-   W_Init : Weight_Vector (1 .. 1) := [1 => 5.0];
+   W_Init  : constant Weight_Vector (1 .. 1) := [1 => 5.0];
    W_Final : Weight_Vector (1 .. 1);
-   Best_C : Cost_Type;
-   Iters  : Natural;
+   Best_C  : Cost_Type;
+   Iters   : Natural;
 
-   W_2D_Init : Weight_Vector (1 .. 2) := [1 => 10.0, 2 => -10.0];
+   W_2D_Init  : constant Weight_Vector (1 .. 2) := [1 => 10.0, 2 => -10.0];
    W_2D_Final : Weight_Vector (1 .. 2);
 
    Ex_Caught : Boolean;
@@ -133,7 +133,7 @@ begin
    -- TEST 6 — Euclidean Norm Helper Function
    Put_Line ("TEST 6 — Euclidean Norm Helper");
    declare
-      V : Weight_Vector(1 .. 3) := [3.0, 4.0, 0.0];
+      V : constant Weight_Vector(1 .. 3) := [3.0, 4.0, 0.0];
       Norm : Weight_Type;
    begin
       Norm := Euclidean_Norm (V);
@@ -145,7 +145,7 @@ begin
    -- TEST 7 — Single Element Vector Edge Case
    Put_Line ("TEST 7 — Single Element Vector Edge Case");
    declare
-      Single_W : Weight_Vector(1 .. 1) := [1 => 1.5];
+      Single_W : constant Weight_Vector(1 .. 1) := [1 => 1.5];
       Res_W    : Weight_Vector(1 .. 1);
    begin
       Minimize
