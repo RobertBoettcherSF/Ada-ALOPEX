@@ -61,7 +61,6 @@ package body Alopex is
 
       Gen          : Generator;
       Current_W    : Weight_Vector := Initial_Weights;
-      Prev_W       : Weight_Vector := Initial_Weights;
       Delta_W      : Weight_Vector (Initial_Weights'Range) := [others => 0.0];
 
       Current_R    : Cost_Type;
@@ -75,10 +74,6 @@ package body Alopex is
    begin
       if Initial_Weights'Length = 0 then
          raise Empty_Vector_Error with "Initial weights vector cannot be empty.";
-      end if;
-
-      if Max_Iterations = 0 then
-         raise Invalid_Parameter_Error with "Max_Iterations must be greater than zero.";
       end if;
 
       -- Evaluate initial objective
@@ -117,7 +112,6 @@ package body Alopex is
             if Iter = 1 then
                for I in Current_W'Range loop
                   Delta_W(I) := R_Vector(I);
-                  Prev_W(I) := Current_W(I);
                   Current_W(I) := Current_W(I) + Delta_W(I);
                end loop;
             else
@@ -129,7 +123,6 @@ package body Alopex is
                      Step_Change : constant Weight_Type :=
                        Weight_Type(Effective_LR) * Delta_W(I) * Weight_Type(Delta_R) + R_Vector(I);
                   begin
-                     Prev_W(I) := Current_W(I);
                      Delta_W(I) := Step_Change;
                      Current_W(I) := Current_W(I) + Step_Change;
                   end;
