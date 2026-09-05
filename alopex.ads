@@ -14,9 +14,6 @@ package Alopex is
 
    type Weight_Vector is array (Positive range <>) of Weight_Type;
 
-   -- Callback type for objective function evaluation
-   type Objective_Function is access function (W : Weight_Vector) return Cost_Type;
-
    -- Exceptions
    Invalid_Parameter_Error : exception;
    Empty_Vector_Error      : exception;
@@ -29,7 +26,7 @@ package Alopex is
    -----------------------------------------------------------------------------
    procedure Optimize
      (Initial_Weights : in Weight_Vector;
-      Objective       : not null Objective_Function;
+      Objective       : not null access function (W : Weight_Vector) return Cost_Type;
       Max_Iterations  : in Positive;
       Learning_Rate   : in Learning_Rate_Type;
       Temperature     : in Temperature_Type;
@@ -47,7 +44,7 @@ package Alopex is
    -----------------------------------------------------------------------------
    procedure Minimize
      (Initial_Weights : in Weight_Vector;
-      Objective       : not null Objective_Function;
+      Objective       : not null access function (W : Weight_Vector) return Cost_Type;
       Max_Iterations  : in Positive;
       Learning_Rate   : in Learning_Rate_Type; -- Positive magnitude, applied as negative
       Temperature     : in Temperature_Type;
@@ -66,7 +63,7 @@ package Alopex is
    -----------------------------------------------------------------------------
    procedure Maximize
      (Initial_Weights : in Weight_Vector;
-      Objective       : not null Objective_Function;
+      Objective       : not null access function (W : Weight_Vector) return Cost_Type;
       Max_Iterations  : in Positive;
       Learning_Rate   : in Learning_Rate_Type; -- Positive magnitude
       Temperature     : in Temperature_Type;
@@ -85,7 +82,7 @@ package Alopex is
    -----------------------------------------------------------------------------
    procedure Optimize_Adaptive
      (Initial_Weights   : in Weight_Vector;
-      Objective         : not null Objective_Function;
+      Objective         : not null access function (W : Weight_Vector) return Cost_Type;
       Max_Iterations    : in Positive;
       Learning_Rate     : in Learning_Rate_Type;
       Initial_Temp      : in Temperature_Type;
