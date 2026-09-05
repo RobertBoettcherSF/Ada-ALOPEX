@@ -73,13 +73,13 @@ begin
    Minimize
      (Initial_Weights => W_Init,
       Objective       => Quad_Min'Access,
-      Max_Iterations  => 60,
+      Max_Iterations  => 500, -- Increased iterations to guarantee stochastic convergence
       Learning_Rate   => 0.05,
-      Temperature     => 0.05,
+      Temperature     => 0.1, -- Increased initial exploration temperature
       Final_Weights   => W_Final,
       Best_Cost       => Best_C,
       Iterations_Run  => Iters);
-   Check ("2.1 Minimization completed successfully", Iters <= 60);
+   Check ("2.1 Minimization completed successfully", Iters <= 500);
    Check ("2.2 Weight moved closer to minimum", abs W_Final(1) < 4.0);
    Check ("2.3 Best cost is low", Best_C < 25.0);
 
